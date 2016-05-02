@@ -40,7 +40,7 @@ public:
 	float m_thrist;
 
 private:
-	float m_facingDirection;
+	//float m_facingDirection;
 	float m_diameter;
 	Timer m_clock;
 	//float m_clock;
@@ -76,6 +76,9 @@ private:
 	float m_foodDeath;
 	float m_waterDeath;
 	float m_enemyDeath;
+
+	Food* m_food;
+	Water* m_water;
 };
 
 #endif

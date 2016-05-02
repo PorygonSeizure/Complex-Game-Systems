@@ -153,6 +153,16 @@ void GeneticApp::Draw()
 							ImGui::Button("Killed", ImVec2(-1.f, 0.f));
 						else if (agent.death == NOCONTACT)
 							ImGui::Button("No Contact", ImVec2(-1.f, 0.f));
+						else if (agent.death == NOCONTACTCLOSERTOFOOD)
+							ImGui::Button("No Contact (Food)", ImVec2(-1.f, 0.f));
+						else if (agent.death == NOCONTACTCLOSERTOWATER)
+							ImGui::Button("No Contact (Water)", ImVec2(-1.f, 0.f));
+						else if (agent.death == KILLEDCLOSERTOFOOD)
+							ImGui::Button("Killed (Food)", ImVec2(-1.f, 0.f));
+						else if (agent.death == KILLEDCLOSERTOWATER)
+							ImGui::Button("Killed (Water)", ImVec2(-1.f, 0.f));
+						else if (agent.death == NOCONTACT)
+							ImGui::Button("No Contact", ImVec2(-1.f, 0.f));
 						ImGui::NextColumn();
 					}
 				}
@@ -187,7 +197,7 @@ void GeneticApp::SetUpAgents()
 		//startPos.y = (float)(rand() % 2 * screenHeight);
 		//float size = 30.f;
 		//float facing = 44.f / 7.f * (float)((rand() % 1000) / 1000.f);
-		startPos.x = 100.f;
+		startPos.x = 600.f;
 		startPos.y = 100.f;
 		float size = 20.f;
 		float facing = 0.f;
@@ -265,8 +275,8 @@ void GeneticApp::CheckAgentWater(Agent* agent)
 
 void GeneticApp::SetUpEnemy()
 {
-	m_enemies[0] = Enemy(vec2(400, 300), 25.f, 0.f);
-	m_enemies[1] = Enemy(vec2(800, 300), 25.f, 0.f);
+	m_enemies[0] = Enemy(vec2(1200, 700), 25.f);
+	m_enemies[1] = Enemy(vec2(1100, 600), 25.f);
 
 	//int screenWidth = 0;
 	//int screenHeight = 0;
@@ -279,7 +289,7 @@ void GeneticApp::SetUpEnemy()
 void GeneticApp::SetUpFood()
 {
 	delete m_food;
-	m_food = new Food(vec2(900, 50), 75.f);
+	m_food = new Food(vec2(100, 600), 75.f);
 	//m_foods[0] = Food(vec2(900, 50), 75.f);
 	//m_foods[1] = Food(vec2(600, 600), 75.f);
 
@@ -295,7 +305,7 @@ void GeneticApp::SetUpFood()
 void GeneticApp::SetUpWater()
 {
 	delete m_water;
-	m_water = new Water(vec2(900, 500), 75.f);
+	m_water = new Water(vec2(900, 600), 75.f);
 	//m_waters[0] = Water(vec2(50, 500), 75.f);
 	//m_waters[1] = Water(vec2(1000, 600), 75.f);
 

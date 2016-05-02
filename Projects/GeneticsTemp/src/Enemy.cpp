@@ -6,15 +6,15 @@
 
 using glm::vec2;
 
-Enemy::Enemy(vec2 centre, float range, float direction)
+Enemy::Enemy(vec2 centre, float range)
 {
 	m_centre = centre;
 	m_range = range;
 	m_active = true;
 
 	m_maxSpeed = 500.f;
-	m_velocity.x = m_maxSpeed * sin(direction);
-	m_velocity.y = m_maxSpeed * cos(direction);
+	m_velocity.x = m_maxSpeed / 4.f;
+	m_velocity.y = m_maxSpeed / 4.f;
 }
 
 void Enemy::Update(float deltaTime, Agent* agent)
@@ -73,7 +73,7 @@ void Enemy::Behaviour(float deltaTime, Agent* agent)
 {
 	vec2 temp = glm::normalize(agent->GetPosition() - m_centre) * m_maxSpeed;
 	vec2 force = temp - m_velocity;
-	force /= 6.f;
+	force /= 3.f;
 
 	if (force.x >= m_maxSpeed)
 		force.x = m_maxSpeed;

@@ -12,9 +12,9 @@ using glm::vec2;
 
 Agent::Agent()
 {
-	m_baseFoodWeight = 100.f;
-	m_baseWaterWeight = 100.f;
-	m_baseEnemyWeight = 100.f;
+	m_baseFoodWeight = 150.f;
+	m_baseWaterWeight = 150.f;
+	m_baseEnemyWeight = 000.f;
 	m_generation = 1;
 	m_foodDeath = 0;
 	m_waterDeath = 0;
@@ -22,9 +22,9 @@ Agent::Agent()
 
 	for (int i = 0; i < 3; i++)
 	{
-		m_bestGen[i].food = 100.f;
-		m_bestGen[i].water = 100.f;
-		m_bestGen[i].enemy = 100.f;
+		m_bestGen[i].food = 150.f;
+		m_bestGen[i].water = 150.f;
+		m_bestGen[i].enemy = 000.f;
 		m_bestGen[i].time = 0.f;
 	}
 }
@@ -32,6 +32,8 @@ Agent::Agent()
 void Agent::Update(float delta, Food* food, Water* water, Enemy* enemy, int enemiesSize)
 {
 	//m_clock += delta;
+	m_food = food;
+	m_water = water;
 	Behaviour(delta, food, water, enemy, enemiesSize);
 	m_position += m_velocity * delta;
 	if (CheckBounds())
@@ -85,13 +87,13 @@ void Agent::Setup(vec2 startPos, float size, glm::vec4 colour, float facingDirec
 		ModifyNewGen();
 	m_position = startPos;
 	m_startingPosition = startPos;
-	m_facingDirection = facingDirection;
+	//m_facingDirection = facingDirection;
 	m_diameter = size;
 	//m_clock = 0.f;
 	m_colour = colour;
 	m_maxSpeed = 500.f;
-	m_velocity.x = m_maxSpeed * sin(m_facingDirection);
-	m_velocity.y = m_maxSpeed * cos(m_facingDirection);
+	m_velocity.x = m_maxSpeed / 4.f;// * sin(m_facingDirection);
+	m_velocity.y = m_maxSpeed / 4.f;// * cos(m_facingDirection);
 	m_hunger = 500.f;
 	m_thrist = 500.f;
 	m_foodWeight = rand() % 10 + (m_baseFoodWeight - 5);
@@ -134,8 +136,13 @@ Memory Agent::FoodDeath()
 	if (m_firstContact)
 		newMemory = AddToMemory(STARVED);
 	else
-		newMemory = AddToMemory(NOCONTACT);
-	m_startingPosition.x = 100.f;//(float)(rand() % screenWidth);
+	{
+		if (glm::distance(m_position, m_food->GetPos()) < glm::distance(m_position, m_water->GetPos()))
+			newMemory = AddToMemory(NOCONTACTCLOSERTOFOOD);
+		else if (glm::distance(m_position, m_food->GetPos()) > glm::distance(m_position, m_water->GetPos()))
+			newMemory = AddToMemory(NOCONTACTCLOSERTOWATER);
+	}
+	m_startingPosition.x = 600.f;//(float)(rand() % screenWidth);
 	m_startingPosition.y = 100.f;//(float)(rand() % 2 * screenHeight);
 	float size = 20.f;
 	float facing = 0.f;//44.f / 7.f * (float)((rand() % 1000) / 1000.f);
@@ -151,9 +158,11 @@ Memory Agent::WaterDeath()
 	Memory newMemory;
 	if (m_firstContact)
 		newMemory = AddToMemory(DEHYDRATED);
-	else
-		newMemory = AddToMemory(NOCONTACT);
-	m_startingPosition.x = 100.f;//(float)(rand() % screenWidth);
+	else if (glm::distance(m_position, m_food->GetPos()) < glm::distance(m_position, m_water->GetPos()))
+		newMemory = AddToMemory(NOCONTACTCLOSERTOFOOD);
+	else if (glm::distance(m_position, m_food->GetPos()) > glm::distance(m_position, m_water->GetPos()))
+		newMemory = AddToMemory(NOCONTACTCLOSERTOWATER);
+	m_startingPosition.x = 600.f;//(float)(rand() % screenWidth);
 	m_startingPosition.y = 100.f;//(float)(rand() % 2 * screenHeight);
 	float size = 20.f;
 	float facing = 0.f;//44.f / 7.f * (float)((rand() % 1000) / 1000.f);
@@ -166,8 +175,14 @@ Memory Agent::EnemyContact()
 	int screenWidth = 0;
 	int screenHeight = 0;
 	glfwGetWindowSize(glfwGetCurrentContext(), &screenWidth, &screenHeight);
-	Memory newMemory = AddToMemory(KILLED);
-	m_startingPosition.x = 100.f;//(float)(rand() % screenWidth);
+	Memory newMemory;
+	if (m_firstContact)
+		newMemory = AddToMemory(KILLED);
+	else if (glm::distance(m_position, m_food->GetPos()) < glm::distance(m_position, m_water->GetPos()))
+		newMemory = AddToMemory(KILLEDCLOSERTOFOOD);
+	else if (glm::distance(m_position, m_food->GetPos()) > glm::distance(m_position, m_water->GetPos()))
+		newMemory = AddToMemory(KILLEDCLOSERTOWATER);
+	m_startingPosition.x = 600.f;//(float)(rand() % screenWidth);
 	m_startingPosition.y = 100.f;//(float)(rand() % 2 * screenHeight);
 	float size = 20.f;
 	float facing = 0.f;//44.f / 7.f * (float)((rand() % 1000) / 1000.f);
@@ -223,7 +238,7 @@ void Agent::ModifyNewGen()
 	//parent2.time = (float)INT_MAX;
 
 	int i = 0;
-	if (m_generation % 15 == 0)
+	if (m_generation % 20 == 0)
 		i = 5;
 
 	float timeTotal = 0.f;
@@ -278,72 +293,52 @@ void Agent::ModifyNewGen()
 
 	for (auto e : m_memory)
 	{
-		if (e.time < timeTotal)
+		switch (e.death)
 		{
-			switch (e.death)
-			{
-			case STARVED:
-				//m_baseFoodWeight += 2.f;
-				//m_baseWaterWeight--;
-				//m_baseEnemyWeight--;
-				m_foodDeath += (e.time / timeTotal);
-				break;
-			case DEHYDRATED:
-				//m_baseFoodWeight--;
-				//m_baseWaterWeight += 2.f;
-				//m_baseEnemyWeight--;
-				m_waterDeath += (e.time / timeTotal);
-				break;
-			case KILLED:
-				//m_baseFoodWeight--;
-				//m_baseWaterWeight--;
-				//m_baseEnemyWeight += 2.f;
-				m_enemyDeath += (e.time / timeTotal);
-				break;
-			case NOCONTACT:
-				//m_baseFoodWeight++;
-				//m_baseWaterWeight++;
-				//m_baseEnemyWeight -= 2.f;
-				//m_foodDeath++;
-				//m_waterDeath++;
-				//m_enemyDeath--;
-				break;
-			}
-		}
-		else if (e.time > timeTotal)
-		{
-			switch (e.death)
-			{
-			case STARVED:
-				//m_baseFoodWeight++;
-				//m_baseWaterWeight -= 0.5f;
-				//m_baseEnemyWeight -= 0.5f;
-				m_foodDeath += (e.time / timeTotal);
-				break;
-			case DEHYDRATED:
-				//m_baseFoodWeight -= 0.5f;
-				//m_baseWaterWeight++;
-				//m_baseEnemyWeight -= 0.5f;
-				m_waterDeath += (e.time / timeTotal);
-				break;
-			case KILLED:
-				//m_baseFoodWeight -= 0.5f;
-				//m_baseWaterWeight -= 0.5f;
-				//m_baseEnemyWeight++;
-				m_enemyDeath += (e.time / timeTotal);
-				break;
-			case NOCONTACT:
-				//m_baseFoodWeight += 0.5f;
-				//m_baseWaterWeight += 0.5f;
-				//m_baseEnemyWeight--;
-				//m_foodDeath++;
-				//m_waterDeath++;
-				//m_enemyDeath--;
-				m_foodDeath += (e.time / timeTotal);
-				m_waterDeath += (e.time / timeTotal);
-				m_enemyDeath -= (e.time / timeTotal);
-				break;
-			}
+		case STARVED:
+			//m_baseFoodWeight += 2.f;
+			//m_baseWaterWeight--;
+			//m_baseEnemyWeight--;
+			m_foodDeath += (e.time / timeTotal);
+			break;
+		case DEHYDRATED:
+			//m_baseFoodWeight--;
+			//m_baseWaterWeight += 2.f;
+			//m_baseEnemyWeight--;
+			m_waterDeath += (e.time / timeTotal);
+			break;
+		case KILLED:
+			//m_baseFoodWeight--;
+			//m_baseWaterWeight--;
+			//m_baseEnemyWeight += 2.f;
+			m_enemyDeath += (e.time / timeTotal);
+			break;
+		case NOCONTACTCLOSERTOFOOD:
+			m_foodDeath += (2.f * (e.time / timeTotal));
+			//m_foodDeath -= (e.time / timeTotal);
+			m_enemyDeath -= (e.time / timeTotal);
+			break;
+		case NOCONTACTCLOSERTOWATER:
+			m_waterDeath += (2.f * (e.time / timeTotal));
+			//m_waterDeath -= (e.time / timeTotal);
+			m_enemyDeath -= (e.time / timeTotal);
+			break;
+		case KILLEDCLOSERTOFOOD:
+			m_enemyDeath += (2.f * (e.time / timeTotal));
+			m_foodDeath -= (e.time / timeTotal);
+			break;
+		case KILLEDCLOSERTOWATER:
+			m_enemyDeath += (2.f * (e.time / timeTotal));
+			m_waterDeath -= (e.time / timeTotal);
+			break;
+		case NOCONTACT:
+			//m_baseFoodWeight++;
+			//m_baseWaterWeight++;
+			//m_baseEnemyWeight -= 2.f;
+			//m_foodDeath++;
+			//m_waterDeath++;
+			//m_enemyDeath--;
+			break;
 		}
 	}
 
@@ -356,47 +351,47 @@ void Agent::ModifyNewGen()
 	//	m_baseEnemyWeight = (m_bestGen[0].enemy + m_bestGen[1].enemy + m_bestGen[2].enemy) / 3.f;
 	//}
 
-	if (m_foodDeath > (total / 2.f))
-	{
-		m_baseFoodWeight += 10.f;
-		m_baseWaterWeight -= 5.f;
-		m_baseEnemyWeight -= 5.f;
-	}
-
-	if (m_waterDeath > (total / 2.f))
-	{
-		m_baseWaterWeight += 10.f;
-		m_baseFoodWeight -= 5.f;
-		m_baseEnemyWeight -= 5.f;
-	}
-
-	if (m_enemyDeath > (total / 2.f))
-	{
-		m_baseEnemyWeight += 10.f;
-		m_baseFoodWeight -= 5.f;
-		m_baseWaterWeight -= 5.f;
-	}
-
-	if (m_foodDeath <= 0.f)
-	{
-		m_baseFoodWeight -= 10.f;
-		m_baseWaterWeight += 5.f;
-		m_baseEnemyWeight += 5.f;
-	}
-
-	if (m_waterDeath <= 0.f)
-	{
-		m_baseWaterWeight -= 10.f;
-		m_baseFoodWeight += 5.f;
-		m_baseEnemyWeight += 5.f;
-	}
-
-	if (m_enemyDeath <= 0.f)
-	{
-		m_baseEnemyWeight -= 10.f;
-		m_baseFoodWeight += 5.f;
-		m_baseWaterWeight += 5.f;
-	}
+	//if (m_foodDeath > (total / 2.f))
+	//{
+	//	m_baseFoodWeight += 10.f;
+	//	m_baseWaterWeight -= 5.f;
+	//	m_baseEnemyWeight -= 5.f;
+	//}
+	//
+	//if (m_waterDeath > (total / 2.f))
+	//{
+	//	m_baseWaterWeight += 10.f;
+	//	m_baseFoodWeight -= 5.f;
+	//	m_baseEnemyWeight -= 5.f;
+	//}
+	//
+	//if (m_enemyDeath > (total / 2.f))
+	//{
+	//	m_baseEnemyWeight += 10.f;
+	//	m_baseFoodWeight -= 5.f;
+	//	m_baseWaterWeight -= 5.f;
+	//}
+	//
+	//if (m_foodDeath <= 0.f)
+	//{
+	//	m_baseFoodWeight -= 10.f;
+	//	m_baseWaterWeight += 5.f;
+	//	m_baseEnemyWeight += 5.f;
+	//}
+	//
+	//if (m_waterDeath <= 0.f)
+	//{
+	//	m_baseWaterWeight -= 10.f;
+	//	m_baseFoodWeight += 5.f;
+	//	m_baseEnemyWeight += 5.f;
+	//}
+	//
+	//if (m_enemyDeath <= 0.f)
+	//{
+	//	m_baseEnemyWeight -= 10.f;
+	//	m_baseFoodWeight += 5.f;
+	//	m_baseWaterWeight += 5.f;
+	//}
 
 	m_baseFoodWeight -= (total / 3.f);
 	m_baseWaterWeight -= (total / 3.f);

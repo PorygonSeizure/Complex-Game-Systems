@@ -10,7 +10,7 @@ class Enemy : public Object
 {
 public:
 	Enemy() { m_active = false; }
-	Enemy(glm::vec2 centre, float range, float direction);
+	Enemy(glm::vec2 centre, float range);
 	~Enemy() {};
 
 	void Update(float deltaTime, Agent* agent);
