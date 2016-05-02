@@ -108,8 +108,11 @@ void GeneticApp::Draw()
 		ImGui::SliderFloat("Base Food Weight", &m_agent->m_baseFoodWeight, -300.f, 300.f);
 		ImGui::SliderFloat("Base Water Weight", &m_agent->m_baseWaterWeight, -300.f, 300.f);
 		ImGui::SliderFloat("Base Enemy Weight", &m_agent->m_baseEnemyWeight, -300.f, 300.f);
-		ImGui::SliderFloat("Hunger Level", &m_agent->m_hunger, 0.f, 2000.f);
-		ImGui::SliderFloat("Thrist Level", &m_agent->m_thrist, 0.f, 2000.f);
+		ImGui::Text("Hunger Level %f", m_agent->m_hunger);
+		ImGui::Text("Thrist Level %f", m_agent->m_thrist);
+		ImGui::Text("1st Best Gen: %d", m_agent->GetBestGens()[0].generation);
+		ImGui::Text("2nd Best Gen: %d", m_agent->GetBestGens()[1].generation);
+		ImGui::Text("3rd Best Gen: %d", m_agent->GetBestGens()[2].generation);
 		if (ImGui::CollapsingHeader("Current Agent"))
 		{
 			ImGui::Text("Food weight %f", weights.x);
@@ -193,14 +196,14 @@ void GeneticApp::SetUpAgents()
 	//for (int index = 0; index < MAX_AGENTS; index++)
 	//{
 		vec2 startPos;
-		//startPos.x = (float)(rand() % screenWidth);
-		//startPos.y = (float)(rand() % 2 * screenHeight);
-		//float size = 30.f;
-		//float facing = 44.f / 7.f * (float)((rand() % 1000) / 1000.f);
-		startPos.x = 600.f;
-		startPos.y = 100.f;
-		float size = 20.f;
-		float facing = 0.f;
+		startPos.x = (float)(rand() % screenWidth);
+		startPos.y = (float)(rand() % 2 * screenHeight);
+		float size = 30.f;
+		float facing = 44.f / 7.f * (float)((rand() % 1000) / 1000.f);
+		//startPos.x = 600.f;
+		//startPos.y = 100.f;
+		//float size = 20.f;
+		//float facing = 0.f;
 		//m_agents[index].Setup(startPos, size, vec4(1, 1, 1, 1), facing);
 		m_agent->Setup(startPos, size, vec4(1, 1, 1, 1), facing);
 	//}
@@ -275,47 +278,49 @@ void GeneticApp::CheckAgentWater(Agent* agent)
 
 void GeneticApp::SetUpEnemy()
 {
-	m_enemies[0] = Enemy(vec2(1200, 700), 25.f);
-	m_enemies[1] = Enemy(vec2(1100, 600), 25.f);
+	//m_enemies[0] = Enemy(vec2(1200, 700), 25.f);
+	//m_enemies[1] = Enemy(vec2(1100, 600), 25.f);
 
-	//int screenWidth = 0;
-	//int screenHeight = 0;
-	//glfwGetWindowSize(m_window, &screenWidth, &screenHeight);
+	int screenWidth = 0;
+	int screenHeight = 0;
+	glfwGetWindowSize(m_window, &screenWidth, &screenHeight);
 	//float facing = 44.f / 7.f * (float)((rand() % 1000) / 1000.f);
-	//for (int i = 0; i < MAX_ENEMY; i++)
-	//	m_enemies[i] = Enemy(vec2(rand() % screenWidth, rand() % screenHeight), 25.f, facing);
+	for (int i = 0; i < MAX_ENEMY; i++)
+		m_enemies[i] = Enemy(vec2(rand() % screenWidth, rand() % screenHeight), 25.f/*, facing*/);
 }
 
 void GeneticApp::SetUpFood()
 {
-	delete m_food;
-	m_food = new Food(vec2(100, 600), 75.f);
+	//delete m_food;
+	//m_food = new Food(vec2(100, 600), 75.f);
+
 	//m_foods[0] = Food(vec2(900, 50), 75.f);
 	//m_foods[1] = Food(vec2(600, 600), 75.f);
 
-	//int screenWidth = 0;
-	//int screenHeight = 0;
-	//glfwGetWindowSize(m_window, &screenWidth, &screenHeight);
-	//int x = rand() % screenWidth;
-	//int y = rand() % screenHeight;
-	//delete m_food;
-	//m_food = new Food(vec2(x, y), 75.f);
+	int screenWidth = 0;
+	int screenHeight = 0;
+	glfwGetWindowSize(m_window, &screenWidth, &screenHeight);
+	int x = rand() % screenWidth;
+	int y = rand() % screenHeight;
+	delete m_food;
+	m_food = new Food(vec2(x, y), 75.f);
 }
 
 void GeneticApp::SetUpWater()
 {
-	delete m_water;
-	m_water = new Water(vec2(900, 600), 75.f);
+	//delete m_water;
+	//m_water = new Water(vec2(900, 600), 75.f);
+
 	//m_waters[0] = Water(vec2(50, 500), 75.f);
 	//m_waters[1] = Water(vec2(1000, 600), 75.f);
 
-	//int screenWidth = 0;
-	//int screenHeight = 0;
-	//glfwGetWindowSize(m_window, &screenWidth, &screenHeight);
-	//int x = rand() % screenWidth;
-	//int y = rand() % screenHeight;
-	//delete m_water;
-	//m_water = new Water(vec2(x, y), 75.f);
+	int screenWidth = 0;
+	int screenHeight = 0;
+	glfwGetWindowSize(m_window, &screenWidth, &screenHeight);
+	int x = rand() % screenWidth;
+	int y = rand() % screenHeight;
+	delete m_water;
+	m_water = new Water(vec2(x, y), 75.f);
 }
 
 float GeneticApp::SimulateEnemy(vec2& centre, float range, Agent* agent)

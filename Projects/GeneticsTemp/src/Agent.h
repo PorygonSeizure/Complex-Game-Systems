@@ -32,6 +32,7 @@ public:
 	glm::vec3 GetWeights() { return glm::vec3(m_foodWeight, m_waterWeight, m_enemyWeight); }
 	int GetGen() { return m_generation; }
 	//float GetTime() { return m_clock; }
+	Memory* GetBestGens() { return m_bestGen; }
 
 	float m_baseFoodWeight;
 	float m_baseWaterWeight;

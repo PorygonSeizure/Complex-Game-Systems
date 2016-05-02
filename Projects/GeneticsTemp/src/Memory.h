@@ -21,6 +21,8 @@ struct Memory
 	float enemy;
 	float time;
 	Death death;
+	int rank;
+	float rankWeight;
 };
 
 #endif

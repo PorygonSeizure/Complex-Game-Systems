@@ -142,8 +142,8 @@ Memory Agent::FoodDeath()
 		else if (glm::distance(m_position, m_food->GetPos()) > glm::distance(m_position, m_water->GetPos()))
 			newMemory = AddToMemory(NOCONTACTCLOSERTOWATER);
 	}
-	m_startingPosition.x = 600.f;//(float)(rand() % screenWidth);
-	m_startingPosition.y = 100.f;//(float)(rand() % 2 * screenHeight);
+	m_startingPosition.x = (float)(rand() % screenWidth);
+	m_startingPosition.y = (float)(rand() % 2 * screenHeight);
 	float size = 20.f;
 	float facing = 0.f;//44.f / 7.f * (float)((rand() % 1000) / 1000.f);
 	Setup(m_startingPosition, m_diameter, m_colour, facing);
@@ -162,8 +162,8 @@ Memory Agent::WaterDeath()
 		newMemory = AddToMemory(NOCONTACTCLOSERTOFOOD);
 	else if (glm::distance(m_position, m_food->GetPos()) > glm::distance(m_position, m_water->GetPos()))
 		newMemory = AddToMemory(NOCONTACTCLOSERTOWATER);
-	m_startingPosition.x = 600.f;//(float)(rand() % screenWidth);
-	m_startingPosition.y = 100.f;//(float)(rand() % 2 * screenHeight);
+	m_startingPosition.x = (float)(rand() % screenWidth);
+	m_startingPosition.y = (float)(rand() % 2 * screenHeight);
 	float size = 20.f;
 	float facing = 0.f;//44.f / 7.f * (float)((rand() % 1000) / 1000.f);
 	Setup(m_startingPosition, m_diameter, m_colour, facing);
@@ -182,8 +182,8 @@ Memory Agent::EnemyContact()
 		newMemory = AddToMemory(KILLEDCLOSERTOFOOD);
 	else if (glm::distance(m_position, m_food->GetPos()) > glm::distance(m_position, m_water->GetPos()))
 		newMemory = AddToMemory(KILLEDCLOSERTOWATER);
-	m_startingPosition.x = 600.f;//(float)(rand() % screenWidth);
-	m_startingPosition.y = 100.f;//(float)(rand() % 2 * screenHeight);
+	m_startingPosition.x = (float)(rand() % screenWidth);
+	m_startingPosition.y = (float)(rand() % 2 * screenHeight);
 	float size = 20.f;
 	float facing = 0.f;//44.f / 7.f * (float)((rand() % 1000) / 1000.f);
 	Setup(m_startingPosition, m_diameter, m_colour, facing);
@@ -257,9 +257,9 @@ void Agent::ModifyNewGen()
 		//}
 	}
 
-	timeTotal /= 10.f;
+	float timeAverage = timeTotal / 10.f;
 
-	if (timeTotal >= m_bestGen[0].time)
+	if (timeAverage >= m_bestGen[0].time)
 	{
 		m_bestGen[2] = m_bestGen[1];
 		m_bestGen[1] = m_bestGen[0];
@@ -267,31 +267,52 @@ void Agent::ModifyNewGen()
 		m_bestGen[0].food = m_baseFoodWeight;
 		m_bestGen[0].water = m_baseWaterWeight;
 		m_bestGen[0].enemy = m_baseEnemyWeight;
-		m_bestGen[0].time = timeTotal;
+		m_bestGen[0].time = timeAverage;
 	}
-	else if (timeTotal >= m_bestGen[1].time)
+	else if (timeAverage >= m_bestGen[1].time)
 	{
 		m_bestGen[2] = m_bestGen[1];
 		m_bestGen[1].generation = m_generation;
 		m_bestGen[1].food = m_baseFoodWeight;
 		m_bestGen[1].water = m_baseWaterWeight;
 		m_bestGen[1].enemy = m_baseEnemyWeight;
-		m_bestGen[1].time = timeTotal;
+		m_bestGen[1].time = timeAverage;
 	}
-	else if (timeTotal >= m_bestGen[2].time)
+	else if (timeAverage >= m_bestGen[2].time)
 	{
 		m_bestGen[2].generation = m_generation;
 		m_bestGen[2].food = m_baseFoodWeight;
 		m_bestGen[2].water = m_baseWaterWeight;
 		m_bestGen[2].enemy = m_baseEnemyWeight;
-		m_bestGen[2].time = timeTotal;
+		m_bestGen[2].time = timeAverage;
 	}
 
 	m_generation++;
 
 	//float baseTime = 8.346f;
 
-	for (auto e : m_memory)
+	Memory tempMemory;
+	tempMemory.time = 0.f;
+	std::vector<Memory> tempVector = m_memory;
+
+	for (int i = 0; i < tempVector.size(); i++)
+	{
+		tempMemory = tempVector[i];
+		int j = i - 1;
+		while (j > 0 && tempVector[j].time > tempMemory.time)
+		{
+			tempVector[j + 1] = tempVector[j];
+			j--;
+		}
+		tempVector[j + 1] = tempMemory;
+	}
+
+	for (int i = 0; i < tempVector.size(); i++)
+	{
+		tempVector[i].rankWeight = tempVector[tempVector.size() - i - 1].time;
+	}
+
+	for (auto e : tempVector)
 	{
 		switch (e.death)
 		{
@@ -299,37 +320,37 @@ void Agent::ModifyNewGen()
 			//m_baseFoodWeight += 2.f;
 			//m_baseWaterWeight--;
 			//m_baseEnemyWeight--;
-			m_foodDeath += (e.time / timeTotal);
+			m_foodDeath += (e.rankWeight / timeAverage);
 			break;
 		case DEHYDRATED:
 			//m_baseFoodWeight--;
 			//m_baseWaterWeight += 2.f;
 			//m_baseEnemyWeight--;
-			m_waterDeath += (e.time / timeTotal);
+			m_waterDeath += (e.rankWeight / timeAverage);
 			break;
 		case KILLED:
 			//m_baseFoodWeight--;
 			//m_baseWaterWeight--;
 			//m_baseEnemyWeight += 2.f;
-			m_enemyDeath += (e.time / timeTotal);
+			m_enemyDeath += (e.rankWeight / timeAverage);
 			break;
 		case NOCONTACTCLOSERTOFOOD:
-			m_foodDeath += (2.f * (e.time / timeTotal));
-			//m_foodDeath -= (e.time / timeTotal);
-			m_enemyDeath -= (e.time / timeTotal);
+			m_foodDeath += (2.f * (e.rankWeight / timeAverage));
+			//m_foodDeath -= (e.rankWeight / timeAverage);
+			m_enemyDeath -= (e.rankWeight / timeAverage);
 			break;
 		case NOCONTACTCLOSERTOWATER:
-			m_waterDeath += (2.f * (e.time / timeTotal));
-			//m_waterDeath -= (e.time / timeTotal);
-			m_enemyDeath -= (e.time / timeTotal);
+			m_waterDeath += (2.f * (e.rankWeight / timeAverage));
+			//m_waterDeath -= (e.rankWeight / timeAverage);
+			m_enemyDeath -= (e.rankWeight / timeAverage);
 			break;
 		case KILLEDCLOSERTOFOOD:
-			m_enemyDeath += (2.f * (e.time / timeTotal));
-			m_foodDeath -= (e.time / timeTotal);
+			m_enemyDeath += (2.f * (e.rankWeight / timeAverage));
+			m_foodDeath -= (e.rankWeight / timeAverage);
 			break;
 		case KILLEDCLOSERTOWATER:
-			m_enemyDeath += (2.f * (e.time / timeTotal));
-			m_waterDeath -= (e.time / timeTotal);
+			m_enemyDeath += (2.f * (e.rankWeight / timeAverage));
+			m_waterDeath -= (e.rankWeight / timeAverage);
 			break;
 		case NOCONTACT:
 			//m_baseFoodWeight++;
