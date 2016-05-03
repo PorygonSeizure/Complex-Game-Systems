@@ -1,0 +1,19 @@
+#version 150
+
+in vec4 position;
+in vec4 colour;
+in vec2 texcoord;
+
+out vec4 vertexColour;
+out vec2 vertexTexCoord;
+out float vertexTextureID;
+
+uniform mat4 projectionMatrix;
+
+void main()
+{
+	vertexColour = colour;
+	vertexTexCoord = texcoord;
+	vertexTextureID = position.w;
+	gl_Position = projectionMatrix * vec4(position.x, position.y, position.z, 1.f);
+}

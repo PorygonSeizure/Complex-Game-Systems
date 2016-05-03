@@ -1,0 +1,27 @@
+#version 150
+
+in vec4 vertexColour;
+in vec2 vertexTexCoord;
+in float vertexTextureID;
+
+out vec4 fragColour;
+
+const int TEXTURE_STACK_SIZE = 16;
+
+uniform sampler2D textureStack[TEXTURE_STACK_SIZE];
+uniform int fontTexture[TEXTURE_STACK_SIZE];
+
+void main()
+{
+	int id = int(vertexTextureID);
+	if(id < TEXTURE_STACK_SIZE)
+	{
+		vec4 rgba = texture2D(textureStack[id], vertexTexCoord);
+		if (fontTexture[id] == 1)
+			rgba = rgba.rrrr;
+		fragColour = rgba * vertexColour;
+	}
+	else fragColour = vertexColour;
+	if (fragColour.a < 0.1f)
+		discard;
+}
