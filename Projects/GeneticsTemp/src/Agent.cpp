@@ -5,6 +5,7 @@
 #include "Water.h"
 
 #include <iostream>
+#include <fstream>
 #include "Enemy.h"
 
 using glm::vec3;
@@ -22,11 +23,19 @@ Agent::Agent()
 
 	for (int i = 0; i < 3; i++)
 	{
+		m_bestGen[i].generation = 0;
 		m_bestGen[i].food = 150.f;
 		m_bestGen[i].water = 150.f;
 		m_bestGen[i].enemy = 000.f;
 		m_bestGen[i].time = 0.f;
 	}
+
+	m_betweenGoodGens = 0;
+
+	foodValues.push_back(m_baseFoodWeight);
+	waterValues.push_back(m_baseWaterWeight);
+	enemyValues.push_back(m_baseEnemyWeight);
+	times.push_back(0.f);
 }
 
 void Agent::Update(float delta, Food* food, Water* water, Enemy* enemy, int enemiesSize)
@@ -237,9 +246,9 @@ void Agent::ModifyNewGen()
 	//parent1.time = 0.f;
 	//parent2.time = (float)INT_MAX;
 
-	int i = 0;
-	if (m_generation % 20 == 0)
-		i = 5;
+	foodValues.push_back(m_baseFoodWeight);
+	waterValues.push_back(m_baseWaterWeight);
+	enemyValues.push_back(m_baseEnemyWeight);
 
 	float timeTotal = 0.f;
 
@@ -259,8 +268,32 @@ void Agent::ModifyNewGen()
 
 	float timeAverage = timeTotal / 10.f;
 
+	times.push_back(timeAverage);
+
+	if (m_generation % 20 == 0)
+	{
+		std::ofstream file("Data.txt", std::ios_base::out | std::ios_base::app);
+
+		if (file.is_open())
+		{
+			for (int i = 1; i < 21; i++)
+			{
+				file << "Test " << i << std::endl;
+				file << "Food: " << foodValues[i] << std::endl;
+				file << "Water: " << waterValues[i] << std::endl;
+				file << "Enemy: " << enemyValues[i] << std::endl;
+				file << "Time: " << times[i] << std::endl << std::endl;
+			}
+
+			file << std::endl << std::endl << std::endl << std::endl;
+		}
+
+		file.close();
+	}
+
 	if (timeAverage >= m_bestGen[0].time)
 	{
+		m_betweenGoodGens = 0;
 		m_bestGen[2] = m_bestGen[1];
 		m_bestGen[1] = m_bestGen[0];
 		m_bestGen[0].generation = m_generation;
@@ -271,6 +304,7 @@ void Agent::ModifyNewGen()
 	}
 	else if (timeAverage >= m_bestGen[1].time)
 	{
+		m_betweenGoodGens = 0;
 		m_bestGen[2] = m_bestGen[1];
 		m_bestGen[1].generation = m_generation;
 		m_bestGen[1].food = m_baseFoodWeight;
@@ -280,22 +314,35 @@ void Agent::ModifyNewGen()
 	}
 	else if (timeAverage >= m_bestGen[2].time)
 	{
+		m_betweenGoodGens = 0;
 		m_bestGen[2].generation = m_generation;
 		m_bestGen[2].food = m_baseFoodWeight;
 		m_bestGen[2].water = m_baseWaterWeight;
 		m_bestGen[2].enemy = m_baseEnemyWeight;
 		m_bestGen[2].time = timeAverage;
 	}
+	else
+		m_betweenGoodGens++;
 
 	m_generation++;
 
 	//float baseTime = 8.346f;
 
+	if (m_betweenGoodGens >= 3)
+	{
+		m_baseFoodWeight += m_bestGen[0].food;
+		m_baseWaterWeight += m_bestGen[0].water;
+		m_baseEnemyWeight += m_bestGen[2].enemy;
+		m_baseFoodWeight /= 2;
+		m_baseWaterWeight /= 2;
+		m_baseEnemyWeight /= 2;
+	}
+
 	Memory tempMemory;
 	tempMemory.time = 0.f;
 	std::vector<Memory> tempVector = m_memory;
 
-	for (int i = 0; i < tempVector.size(); i++)
+	for (unsigned int i = 0; i < tempVector.size(); i++)
 	{
 		tempMemory = tempVector[i];
 		int j = i - 1;
@@ -307,10 +354,8 @@ void Agent::ModifyNewGen()
 		tempVector[j + 1] = tempMemory;
 	}
 
-	for (int i = 0; i < tempVector.size(); i++)
-	{
+	for (unsigned int i = 0; i < tempVector.size(); i++)
 		tempVector[i].rankWeight = tempVector[tempVector.size() - i - 1].time;
-	}
 
 	for (auto e : tempVector)
 	{

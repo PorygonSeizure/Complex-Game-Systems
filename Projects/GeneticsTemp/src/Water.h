@@ -9,7 +9,7 @@ class Water : public Object
 public:
 	Water() { m_active = false; }
 	Water(glm::vec2 centre, float range);
-	~Water() {};
+	virtual ~Water() {};
 
 	void AddGizmo();
 };

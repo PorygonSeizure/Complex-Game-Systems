@@ -113,6 +113,13 @@ void GeneticApp::Draw()
 		ImGui::Text("1st Best Gen: %d", m_agent->GetBestGens()[0].generation);
 		ImGui::Text("2nd Best Gen: %d", m_agent->GetBestGens()[1].generation);
 		ImGui::Text("3rd Best Gen: %d", m_agent->GetBestGens()[2].generation);
+		if (!m_agent->foodValues.empty() && !m_agent->waterValues.empty() && !m_agent->enemyValues.empty() && !m_agent->times.empty() && ImGui::CollapsingHeader("Generation Graphs"))
+		{
+			ImGui::PlotLines("##Food", m_agent->foodValues.data(), m_agent->foodValues.size(), 0, NULL, 0.f, 300.f, ImVec2(0, 80));
+			ImGui::PlotLines("##Water", m_agent->waterValues.data(), m_agent->waterValues.size(), 0, NULL, 0.f, 300.f, ImVec2(0, 80));
+			ImGui::PlotLines("##Enemy", m_agent->enemyValues.data(), m_agent->enemyValues.size(), 0, NULL, -150.f, 150.f, ImVec2(0, 80));
+			ImGui::PlotLines("##Time", m_agent->times.data(), m_agent->times.size(), 0, NULL, 0.f, 30.f, ImVec2(0, 80));
+		}
 		if (ImGui::CollapsingHeader("Current Agent"))
 		{
 			ImGui::Text("Food weight %f", weights.x);
@@ -126,7 +133,7 @@ void GeneticApp::Draw()
 			snprintf(generation, 32, "%d", i);
 			if (ImGui::CollapsingHeader(generation))
 			{
-				ImGui::BeginChild("Agent Memory", ImVec2(0, 250), true);
+				//ImGui::BeginChild("Agent Memory", ImVec2(0, 250), true);
 				ImGui::Columns(6);
 				for (auto agent : m_memory)
 				{
@@ -169,7 +176,7 @@ void GeneticApp::Draw()
 						ImGui::NextColumn();
 					}
 				}
-				ImGui::EndChild();
+				//ImGui::EndChild();
 			}
 		}
 	}

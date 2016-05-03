@@ -11,7 +11,7 @@ class Enemy : public Object
 public:
 	Enemy() { m_active = false; }
 	Enemy(glm::vec2 centre, float range);
-	~Enemy() {};
+	virtual ~Enemy() {};
 
 	void Update(float deltaTime, Agent* agent);
 

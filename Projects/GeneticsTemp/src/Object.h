@@ -8,7 +8,7 @@ class Object
 public:
 	Object() { m_active = false; }
 	Object(glm::vec2 centre, float range);
-	~Object() {};
+	virtual ~Object() {};
 
 	virtual void AddGizmo() = 0 {};
 	bool CheckRange(glm::vec2 testPoint);

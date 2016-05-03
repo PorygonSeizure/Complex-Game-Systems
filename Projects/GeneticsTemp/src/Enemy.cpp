@@ -73,7 +73,7 @@ void Enemy::Behaviour(float deltaTime, Agent* agent)
 {
 	vec2 temp = glm::normalize(agent->GetPosition() - m_centre) * m_maxSpeed;
 	vec2 force = temp - m_velocity;
-	force /= 3.f;
+	force /= 2.f;
 
 	if (force.x >= m_maxSpeed)
 		force.x = m_maxSpeed;

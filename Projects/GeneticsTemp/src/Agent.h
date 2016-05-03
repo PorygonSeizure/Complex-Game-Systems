@@ -15,7 +15,7 @@ class Agent
 {
 public:
 	Agent();
-	~Agent() {}
+	virtual ~Agent() {}
 
 	void Setup(glm::vec2 startPos, float size, glm::vec4 colour, float facingDirection);
 	void Update(float delta, Food* food, Water* water, Enemy* enemies, int enemiesSize);
@@ -39,6 +39,11 @@ public:
 	float m_baseEnemyWeight;
 	float m_hunger;
 	float m_thrist;
+
+	std::vector<float> foodValues;
+	std::vector<float> waterValues;
+	std::vector<float> enemyValues;
+	std::vector<float> times;
 
 private:
 	//float m_facingDirection;
@@ -80,6 +85,8 @@ private:
 
 	Food* m_food;
 	Water* m_water;
+
+	int m_betweenGoodGens;
 };
 
 #endif

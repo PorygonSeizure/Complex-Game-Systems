@@ -9,7 +9,7 @@ class Food : public Object
 public:
 	Food() { m_active = false; }
 	Food(glm::vec2 centre, float range);
-	~Food() {};
+	virtual ~Food() {};
 
 	void AddGizmo();
 };
