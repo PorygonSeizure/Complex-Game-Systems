@@ -45,6 +45,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GeneticsTemp", "Projects\Ge
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "04_BehaviouralMathematics", "Projects\04_BehaviouralMathematics\04_BehaviouralMathematics.vcxproj", "{213554AC-2009-4A64-BECA-ED30ECD5ABB4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StateMachine", "Projects\StateMachine\StateMachine.vcxproj", "{A26600DE-F297-4AA5-88C1-BC8337C9FCD4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{63494F4E-79FA-48AD-AA6C-BDF1FF1619FD} = {63494F4E-79FA-48AD-AA6C-BDF1FF1619FD}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -133,6 +138,14 @@ Global
 		{213554AC-2009-4A64-BECA-ED30ECD5ABB4}.Release|x64.Build.0 = Release|x64
 		{213554AC-2009-4A64-BECA-ED30ECD5ABB4}.Release|x86.ActiveCfg = Release|Win32
 		{213554AC-2009-4A64-BECA-ED30ECD5ABB4}.Release|x86.Build.0 = Release|Win32
+		{A26600DE-F297-4AA5-88C1-BC8337C9FCD4}.Debug|x64.ActiveCfg = Debug|x64
+		{A26600DE-F297-4AA5-88C1-BC8337C9FCD4}.Debug|x64.Build.0 = Debug|x64
+		{A26600DE-F297-4AA5-88C1-BC8337C9FCD4}.Debug|x86.ActiveCfg = Debug|Win32
+		{A26600DE-F297-4AA5-88C1-BC8337C9FCD4}.Debug|x86.Build.0 = Debug|Win32
+		{A26600DE-F297-4AA5-88C1-BC8337C9FCD4}.Release|x64.ActiveCfg = Release|x64
+		{A26600DE-F297-4AA5-88C1-BC8337C9FCD4}.Release|x64.Build.0 = Release|x64
+		{A26600DE-F297-4AA5-88C1-BC8337C9FCD4}.Release|x86.ActiveCfg = Release|Win32
+		{A26600DE-F297-4AA5-88C1-BC8337C9FCD4}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
