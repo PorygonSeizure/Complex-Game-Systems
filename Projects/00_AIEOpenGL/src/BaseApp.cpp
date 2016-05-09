@@ -53,7 +53,7 @@ void BaseApp::Run()
 	while (true)
 	{
 		currTime = glfwGetTime();
-		float deltaTime = (float)(currTime - prevTime);
+		float deltaTime = 60.f * (float)(currTime - prevTime);
 		prevTime = currTime;
 
 		//if the program has been stoped for logner than 12 FPS

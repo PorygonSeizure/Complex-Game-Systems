@@ -246,6 +246,8 @@ void GeneticApp::CheckAgentDamage(Agent* agent)
 		{
 			m_memory.push_back(agent->EnemyContact());
 			SetUpEnemy();
+			SetUpFood();
+			SetUpWater();
 			return;
 		}
 	}
@@ -264,7 +266,13 @@ void GeneticApp::CheckAgentFood(Agent* agent)
 		agent->FoodContact();
 		SetUpFood();
 	}
-	if (agent->m_hunger < 1) { m_memory.push_back(agent->FoodDeath()); SetUpEnemy(); }
+	if (agent->m_hunger < 1)
+	{
+		m_memory.push_back(agent->FoodDeath());
+		SetUpEnemy();
+		SetUpFood();
+		SetUpWater();
+	}
 }
 
 void GeneticApp::CheckAgentWater(Agent* agent)
@@ -280,7 +288,13 @@ void GeneticApp::CheckAgentWater(Agent* agent)
 		agent->WaterContact();
 		SetUpWater();
 	}
-	if (agent->m_thrist < 1) { m_memory.push_back(agent->WaterDeath()); SetUpEnemy(); }
+	if (agent->m_thrist < 1)
+	{
+		m_memory.push_back(agent->WaterDeath());
+		SetUpEnemy();
+		SetUpFood();
+		SetUpWater();
+	}
 }
 
 void GeneticApp::SetUpEnemy()

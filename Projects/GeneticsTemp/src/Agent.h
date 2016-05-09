@@ -3,7 +3,6 @@
 
 #include "glm/glm.hpp"
 #include <vector>
-#include <Timer.h>
 
 #include "Memory.h"
 
@@ -48,8 +47,7 @@ public:
 private:
 	//float m_facingDirection;
 	float m_diameter;
-	Timer m_clock;
-	//float m_clock;
+	float m_clock;
 	float m_maxSpeed;
 
 	glm::vec2 m_position;

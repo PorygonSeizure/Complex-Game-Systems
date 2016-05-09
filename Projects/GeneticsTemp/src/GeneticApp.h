@@ -19,7 +19,7 @@ class GeneticApp : public BaseApp
 public:
 	GeneticApp();
 	virtual ~GeneticApp() {};
-
+	
 	virtual bool Startup();
 	virtual void Shutdown();
 

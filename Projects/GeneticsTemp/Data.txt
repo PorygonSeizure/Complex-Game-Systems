@@ -1,366 +1,105 @@
-Test 1
-Food: 150
-Water: 150
-Enemy: 0
-Time: 5.5383
-
-Test 2
-Food: 142.202
-Water: 147.173
-Enemy: 10.6257
-Time: 3.62567
-
-Test 3
-Food: 133.583
-Water: 141.693
-Enemy: 24.7236
-Time: 3.74932
-
-Test 4
-Food: 125.041
-Water: 135.356
-Enemy: 39.6036
-Time: 5.5555
-
-Test 5
-Food: 117.589
-Water: 132.007
-Enemy: 50.4044
-Time: 3.59727
-
-Test 6
-Food: 111.842
-Water: 121.945
-Enemy: 66.2126
-Time: 6.87562
-
-Test 7
-Food: 109.309
-Water: 118.495
-Enemy: 72.1958
-Time: 6.82421
-
-Test 8
-Food: 105.976
-Water: 115.757
-Enemy: 78.2669
-Time: 5.75385
-
-Test 9
-Food: 102.429
-Water: 113.865
-Enemy: 83.7053
-Time: 6.79271
-
-Test 10
-Food: 97.4504
-Water: 115.11
-Enemy: 87.4397
-Time: 6.90026
-
-Test 11
-Food: 94.4596
-Water: 114.618
-Enemy: 90.9223
-Time: 6.53071
-
-Test 12
-Food: 92.3484
-Water: 111.285
-Enemy: 96.3669
-Time: 6.34082
-
-Test 13
-Food: 85.8125
-Water: 106.098
-Enemy: 108.089
-Time: 6.94219
-
-Test 14
-Food: 85.4745
-Water: 101.325
-Enemy: 113.201
-Time: 6.71556
-
-Test 15
-Food: 86.709
-Water: 96.4476
-Enemy: 116.843
-Time: 6.98559
-
-Test 16
-Food: 84.5685
-Water: 98.3434
-Enemy: 117.088
-Time: 6.09408
-
-Test 17
-Food: 78.1128
-Water: 95.918
-Enemy: 125.969
-Time: 5.01051
-
-Test 18
-Food: 74.7775
-Water: 88.258
-Enemy: 136.964
-Time: 6.799
-
-Test 19
-Food: 77.8086
-Water: 88.7251
-Enemy: 118.764
-Time: 6.31721
-
-
-
-
-
-Test 1
-Food: 150
-Water: 150
-Enemy: 0
-Time: 7.56121
-
-Test 2
-Food: 150.96
-Water: 152.456
-Enemy: -3.4164
-Time: 5.63394
-
-Test 3
-Food: 148.281
-Water: 143.178
-Enemy: 8.54163
-Time: 3.89739
-
-Test 4
-Food: 137.769
-Water: 137.023
-Enemy: 25.2083
-Time: 5.27404
-
-Test 5
-Food: 132.706
-Water: 128.804
-Enemy: 38.4899
-Time: 5.82746
-
-Test 6
-Food: 128.819
-Water: 123.098
-Enemy: 48.0829
-Time: 7.94829
-
-Test 7
-Food: 134.402
-Water: 119.752
-Enemy: 45.8466
-Time: 4.5524
-
-Test 8
-Food: 131.219
-Water: 110.968
-Enemy: 57.8132
-Time: 3.3354
-
-Test 9
-Food: 125.666
-Water: 102.259
-Enemy: 72.0752
-Time: 3.68272
-
-Test 10
-Food: 119.87
-Water: 110.116
-Enemy: 65.2182
-Time: 4.95548
-
-Test 11
-Food: 122.948
-Water: 108.314
-Enemy: 61.5435
-Time: 5.59552
-
-Test 12
-Food: 116.942
-Water: 112.742
-Enemy: 61.9221
-Time: 5.22547
-
-Test 13
-Food: 115.66
-Water: 110.358
-Enemy: 64.9885
-Time: 8.66047
-
-Test 14
-Food: 112.894
-Water: 112.417
-Enemy: 65.6954
-Time: 7.24903
-
-Test 15
-Food: 109.273
-Water: 109.382
-Enemy: 72.3512
-Time: 7.18512
-
-Test 16
-Food: 109.302
-Water: 111.515
-Enemy: 70.1897
-Time: 6.1657
-
-Test 17
-Food: 103.824
-Water: 113.979
-Enemy: 40.7094
-Time: 4.75557
-
-Test 18
-Food: 102.393
-Water: 106.81
-Enemy: 33.062
-Time: 5.21065
-
-Test 19
-Food: 99.4659
-Water: 104.424
-Enemy: 30.2519
-Time: 6.02224
-
-Test 20
-Food: 98.7183
-Water: 101.622
-Enemy: 29.7398
-Time: 5.13882
-
-
-
-
-
-Test 1
-Food: 150
-Water: 150
-Enemy: 0
-Time: 4.80265
-
-Test 2
-Food: 143.241
-Water: 143.897
-Enemy: 12.8613
-Time: 4.96701
-
-Test 3
-Food: 136.269
-Water: 141.468
-Enemy: 22.2627
-Time: 4.37937
-
-Test 4
-Food: 136.741
-Water: 138.375
-Enemy: 24.8835
-Time: 6.44045
-
-Test 5
-Food: 128.264
-Water: 133.23
-Enemy: 38.5062
-Time: 4.62087
-
-Test 6
-Food: 124.607
-Water: 132.281
-Enemy: 43.1127
-Time: 3.92713
-
-Test 7
-Food: 127.818
-Water: 125.128
-Enemy: 47.054
-Time: 6.17546
-
-Test 8
-Food: 122.576
-Water: 116.965
-Enemy: 60.4587
-Time: 6.25503
-
-Test 9
-Food: 116.486
-Water: 110.285
-Enemy: 73.2289
-Time: 4.80957
-
-Test 10
-Food: 110.359
-Water: 103.402
-Enemy: 86.2389
-Time: 6.77878
-
-Test 11
-Food: 107.692
-Water: 98.1386
-Enemy: 94.1697
-Time: 5.62401
-
-Test 12
-Food: 102.598
-Water: 96.5035
-Enemy: 100.899
-Time: 8.31644
-
-Test 13
-Food: 102.671
-Water: 97.0927
-Enemy: 100.237
-Time: 4.25123
-
-Test 14
-Food: 93.5441
-Water: 91.9794
-Enemy: 114.476
-Time: 7.37057
-
-Test 15
-Food: 90.7871
-Water: 93.9986
-Enemy: 115.214
-Time: 7.27837
-
-Test 16
-Food: 86.9103
-Water: 90.173
-Enemy: 122.917
-Time: 5.12729
-
-Test 17
-Food: 86.239
-Water: 84.9608
-Enemy: 128.8
-Time: 4.2841
-
-Test 18
-Food: 78.7568
-Water: 79.7719
-Enemy: 141.471
-Time: 4.79235
-
-Test 19
-Food: 82.7195
-Water: 83.0379
-Enemy: 141.4
-Time: 5.1873
-
-Test 20
-Food: 86.7554
-Water: 84.574
-Enemy: 139.407
-Time: 5.54727
-
-
-
-
+Time: 6.0538
+Time: 4.91667
+Time: 5.96667
+Time: 8.61666
+Time: 7.925
+Time: 10.9167
+Time: 14.7583
+Time: 8.62501
+Time: 11.2833
+Time: 9.52499
+Time: 16.1167
+Time: 9.25001
+Time: 8.95
+Time: 8.45833
+Time: 7.925
+Time: 15.2333
+Time: 8.33333
+Time: 7.06667
+Time: 7.28333
+Time: 6.15
+
+Time: 7.2144
+Time: 5.11667
+Time: 8.13333
+Time: 10.6083
+Time: 6.10833
+Time: 17.95
+Time: 17.225
+Time: 16.9833
+Time: 9.51667
+Time: 3.96667
+Time: 11.5583
+Time: 12.0916
+Time: 6.17501
+Time: 11.15
+Time: 17.1417
+Time: 8.075
+Time: 17.3
+Time: 24.2333
+Time: 15.3
+Time: 15.4333
+
+Time: 5.55253
+Time: 6.75833
+Time: 4.64167
+Time: 12.9333
+Time: 13
+Time: 16.4667
+Time: 14.6083
+Time: 12.05
+Time: 11.4676
+Time: 21.8333
+Time: 6.89167
+Time: 12.2
+Time: 12.075
+Time: 8.13334
+Time: 12.8666
+Time: 13.425
+Time: 13.5833
+Time: 11.1917
+Time: 11.2381
+Time: 8.725
+
+Time: 6.19804
+Time: 6.7
+Time: 7.525
+Time: 9.21668
+Time: 18.8417
+Time: 10.5167
+Time: 12.375
+Time: 6.575
+Time: 14.1917
+Time: 17.35
+Time: 6.30833
+Time: 6.21667
+Time: 10.9583
+Time: 5.93333
+Time: 14.5833
+Time: 15.95
+Time: 9.74167
+Time: 10.8583
+Time: 16.1666
+Time: 5.28333
+
+Time: 9.49019
+Time: 5.69166
+Time: 6.60833
+Time: 9.06666
+Time: 18.4341
+Time: 8.275
+Time: 8.80833
+Time: 14.1331
+Time: 9.41668
+Time: 11.9
+Time: 10.5083
+Time: 14.5417
+Time: 10.9917
+Time: 11.1167
+Time: 5.09167
+Time: 12.85
+Time: 11.5308
+Time: 21.525
+Time: 9.43334
+Time: 8.68334
 

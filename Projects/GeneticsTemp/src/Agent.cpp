@@ -40,7 +40,7 @@ Agent::Agent()
 
 void Agent::Update(float delta, Food* food, Water* water, Enemy* enemy, int enemiesSize)
 {
-	//m_clock += delta;
+	m_clock += delta;
 	m_food = food;
 	m_water = water;
 	Behaviour(delta, food, water, enemy, enemiesSize);
@@ -98,7 +98,7 @@ void Agent::Setup(vec2 startPos, float size, glm::vec4 colour, float facingDirec
 	m_startingPosition = startPos;
 	//m_facingDirection = facingDirection;
 	m_diameter = size;
-	//m_clock = 0.f;
+	m_clock = 0.f;
 	m_colour = colour;
 	m_maxSpeed = 500.f;
 	m_velocity.x = m_maxSpeed / 4.f;// * sin(m_facingDirection);
@@ -109,20 +109,20 @@ void Agent::Setup(vec2 startPos, float size, glm::vec4 colour, float facingDirec
 	m_waterWeight = rand() % 10 + (m_baseWaterWeight - 5);
 	m_enemyWeight = rand() % 10 + (m_baseEnemyWeight - 5);
 
-	m_clock.Start();
+	//m_clock.Start();
 	m_firstContact = false;
 }
 
 Memory Agent::AddToMemory(Death death)
 {
-	m_clock.End();
+	//m_clock.End();
 	Memory newMemory;
 	newMemory.generation = m_generation;
 	newMemory.food = m_foodWeight;
 	newMemory.water = m_waterWeight;
 	newMemory.enemy = m_enemyWeight;
-	newMemory.time = (float)m_clock.GetTimeDiff();
-	//newMemory.time = m_clock;
+	//newMemory.time = (float)m_clock.GetTimeDiff();
+	newMemory.time = m_clock;
 	newMemory.death = death;
 	m_memory.push_back(newMemory);
 	std::cout << newMemory.time << std::endl;
@@ -278,16 +278,16 @@ void Agent::ModifyNewGen()
 		{
 			for (int i = 1; i < 21; i++)
 			{
-				file << "Test " << i << std::endl;
-				file << "Food: " << foodValues[i] << std::endl;
-				file << "Water: " << waterValues[i] << std::endl;
-				file << "Enemy: " << enemyValues[i] << std::endl;
-				file << "Time: " << times[i] << std::endl << std::endl;
+				//file << "Test " << i << std::endl;
+				//file << "Food: " << foodValues[i] << std::endl;
+				//file << "Water: " << waterValues[i] << std::endl;
+				//file << "Enemy: " << enemyValues[i] << std::endl;
+				file << "Time: " << times[i] << std::endl;// << std::endl;
 			}
 
-			file << std::endl << std::endl << std::endl << std::endl;
+			file << std::endl;// << std::endl << std::endl << std::endl;
 		}
-
+		
 		file.close();
 	}
 
@@ -469,6 +469,25 @@ void Agent::ModifyNewGen()
 	m_foodDeath = 0;
 	m_waterDeath = 0;
 	m_enemyDeath = 0;
+
+	float tempTotal = m_baseFoodWeight + m_baseWaterWeight + m_baseEnemyWeight;
+
+	if (tempTotal > 300.f)
+	{
+		float diff = tempTotal - 300.f;
+		diff /= 3.f;
+		m_baseFoodWeight -= diff;
+		m_baseWaterWeight -= diff;
+		m_baseEnemyWeight -= diff;
+	}
+	else if (tempTotal < 300.f)
+	{
+		float diff = 300.f - tempTotal;
+		diff /= 3.f;
+		m_baseFoodWeight += diff;
+		m_baseWaterWeight += diff;
+		m_baseEnemyWeight += diff;
+	}
 
 	m_memory.clear();
 }
