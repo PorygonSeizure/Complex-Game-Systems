@@ -25,7 +25,7 @@ bool BaseApp::CreateGLFWWindow(const char* title, int width, int height)
 		return false;
 	}
 
-	glfwSetWindowSizeCallback(m_window, [](GLFWwindow*, int w, int h){ glViewport(0, 0, w, h); });
+	glfwSetWindowSizeCallback(m_window, [](GLFWwindow*, int w, int h) { glViewport(0, 0, w, h); });
 
 	auto major = ogl_GetMajorVersion();
 	auto minor = ogl_GetMinorVersion();

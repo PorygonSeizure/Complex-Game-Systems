@@ -34,7 +34,7 @@ void Enemy::Update(float deltaTime, Agent* agent)
 	}
 }
 
-bool Enemy::CheckBounds()
+bool Enemy::CheckBounds()	//checks if enemy is in the bounds of the screen
 {
 	int screenWidth = 0;
 	int screenHeight = 0;
@@ -63,13 +63,13 @@ bool Enemy::CheckBounds()
 	return false;
 }
 
-void Enemy::AddGizmo()
+void Enemy::AddGizmo()	//draws the enemy using gizmos
 {
 	if (m_active)
 		Gizmos::Add2DCircle(m_centre, m_range, 20, glm::vec4(0.5, 0, 0, 0.3));
 }
 
-void Enemy::Behaviour(float deltaTime, Agent* agent)
+void Enemy::Behaviour(float deltaTime, Agent* agent)	//sets the enemy behaviour to target the agent
 {
 	vec2 temp = glm::normalize(agent->GetPosition() - m_centre) * m_maxSpeed;
 	vec2 force = temp - m_velocity;

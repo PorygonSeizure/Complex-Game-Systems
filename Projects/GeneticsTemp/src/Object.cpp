@@ -10,7 +10,7 @@ Object::Object(vec2 centre, float range)
 	m_active = true;
 }
 
-bool Object::CheckRange(vec2 testPoint)
+bool Object::CheckRange(vec2 testPoint)	//checks if the testPoint is inside the object's space
 {
 	if (m_active)
 	{

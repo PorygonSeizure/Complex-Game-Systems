@@ -3,6 +3,12 @@
 #include <stdio.h>
 #include <iostream>
 
+Shader::Shader() : m_program(0), m_error(nullptr)
+{
+	m_shaders[0] = m_shaders[1] = m_shaders[2] = m_shaders[3] = m_shaders[4] = 0;
+	m_error = new char[5];
+}
+
 Shader::~Shader()
 {
 	delete[] m_error;

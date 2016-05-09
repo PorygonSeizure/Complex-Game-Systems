@@ -14,7 +14,6 @@ public:
 	virtual ~Enemy() {};
 
 	void Update(float deltaTime, Agent* agent);
-
 	void AddGizmo();
 	void Behaviour(float deltaTime, Agent* agent);
 
@@ -22,6 +21,7 @@ private:
 	bool CheckBounds();
 
 	float m_maxSpeed;
+
 	glm::vec2 m_velocity;
 };
 

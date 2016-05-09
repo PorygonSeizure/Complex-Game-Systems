@@ -13,7 +13,7 @@ enum Death
 	KILLEDCLOSERTOWATER
 };
 
-struct Memory
+struct Memory	//memory of single agent's life
 {
 	int generation;
 	float food;
@@ -21,7 +21,6 @@ struct Memory
 	float enemy;
 	float time;
 	Death death;
-	int rank;
 	float rankWeight;
 };
 

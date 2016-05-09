@@ -32,85 +32,13 @@ Gizmos::Gizmos(unsigned int maxLines, unsigned int maxTris, unsigned int max2DLi
 	m_2Dtris(new GizmoTri[max2DTris])
 {
 	//create shaders
-	/*const char* vsSource = "#version 150\n \
-					 layout(location = 0) in vec4 position; \
-					 layout(location = 1) in vec4 colour; \
-					 out vec4 vertexColour; \
-					 uniform mat4 projectionView; \
-					 void main() { vertexColour = colour; gl_Position = projectionView * position; }";
-
-	const char* fsSource = "#version 150\n \
-					 in vec4 vertexColour; \
-                     out vec4 fragColor; \
-					 void main()	{ fragColor = vertexColour; }";*/
-    
 	m_shader = new Shader();
 	m_shader->LoadShader(GL_VERTEX_SHADER, "../00_AIEOpenGL/src/Shaders/GizmosVertex.vs");
 	m_shader->LoadShader(GL_FRAGMENT_SHADER, "../00_AIEOpenGL/src/Shaders/GizmosFragment.fs");
 
-	//unsigned int vs = glCreateShader(GL_VERTEX_SHADER);
-	//unsigned int fs = glCreateShader(GL_FRAGMENT_SHADER);
-    //
-	//FILE* vertexFile = new FILE();
-	//fopen_s(&vertexFile, "../00_AIEOpenGL/src/Shaders/GizmosVertex.vs", "rb");
-	//fseek(vertexFile, 0, SEEK_END);
-	//unsigned int size = ftell(vertexFile);
-	//char* source = new char[size + 1];
-	//fseek(vertexFile, 0, SEEK_SET);
-	//fread(source, sizeof(char), size, vertexFile);
-	//fclose(vertexFile);
-	//source[size] = 0;
-	//
-	//glShaderSource(vs, 1, (const char**)&source, 0);
-	//glCompileShader(vs);
-	//
-	//FILE* fragmentFile = new FILE();
-	//fopen_s(&fragmentFile, "../00_AIEOpenGL/src/Shaders/GizmosFragment.fs", "rb");
-	//fseek(fragmentFile, 0, SEEK_END);
-	//size = ftell(fragmentFile);
-	//source = new char[size + 1];
-	//fseek(fragmentFile, 0, SEEK_SET);
-	//fread(source, sizeof(char), size, fragmentFile);
-	//fclose(fragmentFile);
-	//source[size] = 0;
-	//
-	//glShaderSource(fs, 1, (const char**)&source, 0);
-	//glCompileShader(fs);
-	//
-	//delete[] source;
-
 	m_shader->Link();
 	m_shader->BindAttrib(0, "position");
 	m_shader->BindAttrib(1, "colour");
-	//m_shader = glCreateProgram();
-	//glAttachShader(m_shader, vs);
-	//glAttachShader(m_shader, fs);
-	//glBindAttribLocation(m_shader, 0, "position");
-	//glBindAttribLocation(m_shader, 1, "colour");
-	//glLinkProgram(m_shader);
-    //
-	//int success = GL_FALSE;
-    //glGetProgramiv(m_shader, GL_LINK_STATUS, &success);
-	//if (success == GL_FALSE)
-	//{
-	//	int infoLogLength = 0;
-	//	glGetShaderiv(m_shader, GL_INFO_LOG_LENGTH, &infoLogLength);
-	//	char* infoLog = new char[infoLogLength];
-    //    
-	//	glGetShaderInfoLog(m_shader, infoLogLength, 0, infoLog);
-	//	std::cout << "Error: Failed to link Gizmo shader program!" << std::endl << infoLog << std::endl;
-	//	delete[] infoLog;
-	//}
-
-	//glDeleteShader(vs);
-	//glDeleteShader(fs);
-
-	/*m_shader = new Shader();
-	m_shader->LoadShader(GL_VERTEX_SHADER, "../00_AIEOpenGL/src/Shaders/GizmosVertex.vs");
-	m_shader->LoadShader(GL_FRAGMENT_SHADER, "../00_AIEOpenGL/src/Shaders/GizmosFragment.fs");
-	m_shader->Link();
-	m_shader->BindAttrib(0, "position");
-	m_shader->BindAttrib(1, "colour");*/
     
     //create VBOs
 	glGenBuffers(1, &m_lineVBO);
@@ -175,9 +103,6 @@ Gizmos::Gizmos(unsigned int maxLines, unsigned int maxTris, unsigned int max2DLi
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	//delete vertexFile;
-	//delete fragmentFile;
 }
 
 Gizmos::~Gizmos()
@@ -197,7 +122,6 @@ Gizmos::~Gizmos()
 	glDeleteBuffers(1, &m_2DtriVBO);
 	glDeleteVertexArrays(1, &m_2DlineVAO);
 	glDeleteVertexArrays(1, &m_2DtriVAO);
-	//glDeleteProgram(m_shader);
 	delete m_shader;
 }
 
@@ -916,11 +840,6 @@ void Gizmos::Draw(const mat4& projectionView)
 		int shader = 0;
 		glGetIntegerv(GL_CURRENT_PROGRAM, &shader);
 
-		//glUseProgram(sm_singleton->m_shader);
-		//
-		//unsigned int projectionViewUniform = glGetUniformLocation(sm_singleton->m_shader, "projectionView");
-		//glUniformMatrix4fv(projectionViewUniform, 1, false, glm::value_ptr(projectionView));
-
 		sm_singleton->m_shader->Bind();
 		int loc = sm_singleton->m_shader->GetUniform("projectionView");
 		glUniformMatrix4fv(loc, 1, false, glm::value_ptr(projectionView));
@@ -983,11 +902,6 @@ void Gizmos::Draw2D(const mat4& projection)
 	{
 		int shader = 0;
 		glGetIntegerv(GL_CURRENT_PROGRAM, &shader);
-
-		//glUseProgram(sm_singleton->m_shader);
-		//
-		//unsigned int projectionViewUniform = glGetUniformLocation(sm_singleton->m_shader, "projectionView");
-		//glUniformMatrix4fv(projectionViewUniform, 1, false, glm::value_ptr(projection));
 
 		sm_singleton->m_shader->Bind();
 		int loc = sm_singleton->m_shader->GetUniform("projectionView");

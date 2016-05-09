@@ -11,13 +11,18 @@ public:
 	virtual ~Object() {};
 
 	virtual void AddGizmo() = 0 {};
+
 	bool CheckRange(glm::vec2 testPoint);
+
 	glm::vec2 GetPos() { return m_centre; }
+
 	void SetActive(bool active) { m_active = active; }
 
 protected:
 	glm::vec2 m_centre;
+
 	float m_range;
+
 	bool m_active;
 };
 

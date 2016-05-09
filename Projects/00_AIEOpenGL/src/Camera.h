@@ -11,11 +11,8 @@ public:
 	virtual ~Camera() {};
 
 	void Update(float deltaTime);
-
 	void SetSpeed(float speed)	{ m_speed = speed; }
-
 	void SetPerspective(float fovY, float aspectRatio, float near, float far);
-
 	void SetLookAtFrom(const glm::vec3& from, const glm::vec3& to);
 
 	const glm::mat4& GetTransform() const { return m_transform; }

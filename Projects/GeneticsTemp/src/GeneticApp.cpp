@@ -1,12 +1,9 @@
 #include "GeneticApp.h"
-#include "gl_core_4_4.h"
 #include <imgui.h>
 #include "ImGui/imgui_impl_glfw_gl3.h"
 
 #include <GLFW/glfw3.h>
 #include <glm/ext.hpp>
-
-#include <stdlib.h>
 
 #include "Gizmos.h"
 
@@ -22,18 +19,14 @@ using glm::vec2;
 
 GeneticApp::GeneticApp()
 {
-	//m_agents = new Agent[MAX_AGENTS];
 	m_enemies = new Enemy[MAX_ENEMY];
-	//m_foods = new Food[MAX_FOOD];
-	//m_waters = new Water[MAX_WATER];
 
 	m_agent = new Agent();
-	//m_enemy = new Enemy();
 	m_food = new Food();
 	m_water = new Water();
 }
 
-bool GeneticApp::Startup()
+bool GeneticApp::Startup()	//startup the project
 {
 	//create a basic window
 	CreateGLFWWindow("AIE OpenGL Application", 1280, 720);
@@ -41,6 +34,7 @@ bool GeneticApp::Startup()
 	//start the gizmo system that can draw basic shapes
 	Gizmos::Create(0xffff, 0xffff, 0xffff, 0xffff);
 
+	//initiliaze imgui
 	ImGui_ImplGlfwGL3_Init(m_window, true);
 
 	ImGuiIO& io = ImGui::GetIO();
@@ -52,7 +46,7 @@ bool GeneticApp::Startup()
 	return true;
 }
 
-void GeneticApp::Shutdown()
+void GeneticApp::Shutdown()	//destroy all objects before program closes
 {
 	delete m_agent;
 	delete m_food;
@@ -65,7 +59,7 @@ void GeneticApp::Shutdown()
 	DestroyGLFWWindow();
 }
 
-bool GeneticApp::Update(float deltaTime)
+bool GeneticApp::Update(float deltaTime)	//update the screen
 {
 	//close the application if the window closes
 	if (glfwWindowShouldClose(m_window) || glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -84,11 +78,12 @@ bool GeneticApp::Update(float deltaTime)
 	return true;
 }
 
-void GeneticApp::Draw()
+void GeneticApp::Draw()	//draw the screen
 {
 	//clear the screen for this frame
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	//draw imgui
 	ImGui_ImplGlfwGL3_NewFrame();
 
 	//get a orthographic projection matrix and draw 2D gizmos
@@ -101,7 +96,6 @@ void GeneticApp::Draw()
 
 	vec3 weights = m_agent->GetWeights();
 	int gen = m_agent->GetGen();
-	//float time = m_agent->GetTime();
 
 	if (ImGui::Begin("My rendering options"))
 	{
@@ -133,7 +127,6 @@ void GeneticApp::Draw()
 			snprintf(generation, 32, "%d", i);
 			if (ImGui::CollapsingHeader(generation))
 			{
-				//ImGui::BeginChild("Agent Memory", ImVec2(0, 250), true);
 				ImGui::Columns(6);
 				for (auto agent : m_memory)
 				{
@@ -176,7 +169,6 @@ void GeneticApp::Draw()
 						ImGui::NextColumn();
 					}
 				}
-				//ImGui::EndChild();
 			}
 		}
 	}
@@ -185,7 +177,7 @@ void GeneticApp::Draw()
 	ImGui::Render();
 }
 
-void GeneticApp::SetUpSimulation()
+void GeneticApp::SetUpSimulation()	//setup all the object
 {
 	SetUpAgents();
 	SetUpEnemy();
@@ -193,53 +185,31 @@ void GeneticApp::SetUpSimulation()
 	SetUpWater();
 }
 
-void GeneticApp::SetUpAgents()
+void GeneticApp::SetUpAgents()	//setup new agent
 {
 	int screenWidth = 0;
 	int screenHeight = 0;
 	glfwGetWindowSize(m_window, &screenWidth, &screenHeight);
 
 	srand((unsigned int)time(NULL));
-	//for (int index = 0; index < MAX_AGENTS; index++)
-	//{
-		vec2 startPos;
-		startPos.x = (float)(rand() % screenWidth);
-		startPos.y = (float)(rand() % 2 * screenHeight);
-		float size = 30.f;
-		float facing = 44.f / 7.f * (float)((rand() % 1000) / 1000.f);
-		//startPos.x = 600.f;
-		//startPos.y = 100.f;
-		//float size = 20.f;
-		//float facing = 0.f;
-		//m_agents[index].Setup(startPos, size, vec4(1, 1, 1, 1), facing);
-		m_agent->Setup(startPos, size, vec4(1, 1, 1, 1), facing);
-	//}
+	vec2 startPos;
+	startPos.x = (float)(rand() % screenWidth);
+	startPos.y = (float)(rand() % 2 * screenHeight);
+	float size = 30.f;
+	float facing = 44.f / 7.f * (float)((rand() % 1000) / 1000.f);
+	m_agent->Setup(startPos, size, vec4(1, 1, 1, 1), facing);
 }
 
-void GeneticApp::UpdateAgents(float delta)
+void GeneticApp::UpdateAgents(float delta)	//update the agent and check if it's come into contact with any other object
 {
-	/*for (int index = 0; index < MAX_AGENTS; index++)
-	{
-		m_agents[index].Update(delta, m_food, m_water, m_enemy);
-		CheckAgentDamage(&m_agents[index]);
-		CheckAgentFood(&m_agents[index]);
-		CheckAgentWater(&m_agents[index]);
-	}*/
-
 	m_agent->Update(delta, m_food, m_water, m_enemies, MAX_ENEMY);
 	CheckAgentDamage(m_agent);
 	CheckAgentFood(m_agent);
 	CheckAgentWater(m_agent);
 }
 
-void GeneticApp::CheckAgentDamage(Agent* agent)
+void GeneticApp::CheckAgentDamage(Agent* agent)	//check if agent has come into contact with an enemy
 {
-	//float damage = 0.f;
-	//for (int i = 0; i < MAX_ENEMY; i++)
-	//	damage += m_enemies[i].CheckRange(agent->GetPosition());
-	//damage += m_enemy->CheckRange(agent->GetPosition());
-	//agent->EnemyContact(damage);
-
 	for (int i = 0; i < MAX_ENEMY; i++)
 	{
 		if (m_enemies[i].CheckRange(agent->GetPosition()))
@@ -253,14 +223,8 @@ void GeneticApp::CheckAgentDamage(Agent* agent)
 	}
 }
 
-void GeneticApp::CheckAgentFood(Agent* agent)
+void GeneticApp::CheckAgentFood(Agent* agent)		//check if agent has come into contact with food
 {
-	//float foodFound = 0.f;
-	//for (int i = 0; i < MAX_FOOD; i++)
-	//	foodFound += m_foods[i].CheckRange(agent->GetPosition());
-	//foodFound += m_food->CheckRange(agent->GetPosition());
-	//agent->FoodContact();
-
 	if (m_food->CheckRange(agent->GetPosition()))
 	{
 		agent->FoodContact();
@@ -275,14 +239,8 @@ void GeneticApp::CheckAgentFood(Agent* agent)
 	}
 }
 
-void GeneticApp::CheckAgentWater(Agent* agent)
+void GeneticApp::CheckAgentWater(Agent* agent)	//check if agent has come into contact with water
 {
-	//float waterFound = 0.f;
-	//for (int i = 0; i < MAX_WATER; i++)
-	//	waterFound += m_waters[i].CheckRange(agent->GetPosition());
-	//waterFound += m_water->CheckRange(agent->GetPosition());
-	//agent->WaterContact(waterFound);
-
 	if (m_water->CheckRange(agent->GetPosition()))
 	{
 		agent->WaterContact();
@@ -297,27 +255,17 @@ void GeneticApp::CheckAgentWater(Agent* agent)
 	}
 }
 
-void GeneticApp::SetUpEnemy()
+void GeneticApp::SetUpEnemy()	//setup new enemy
 {
-	//m_enemies[0] = Enemy(vec2(1200, 700), 25.f);
-	//m_enemies[1] = Enemy(vec2(1100, 600), 25.f);
-
 	int screenWidth = 0;
 	int screenHeight = 0;
 	glfwGetWindowSize(m_window, &screenWidth, &screenHeight);
-	//float facing = 44.f / 7.f * (float)((rand() % 1000) / 1000.f);
 	for (int i = 0; i < MAX_ENEMY; i++)
-		m_enemies[i] = Enemy(vec2(rand() % screenWidth, rand() % screenHeight), 25.f/*, facing*/);
+		m_enemies[i] = Enemy(vec2(rand() % screenWidth, rand() % screenHeight), 25.f);
 }
 
-void GeneticApp::SetUpFood()
+void GeneticApp::SetUpFood()	//setup new food
 {
-	//delete m_food;
-	//m_food = new Food(vec2(100, 600), 75.f);
-
-	//m_foods[0] = Food(vec2(900, 50), 75.f);
-	//m_foods[1] = Food(vec2(600, 600), 75.f);
-
 	int screenWidth = 0;
 	int screenHeight = 0;
 	glfwGetWindowSize(m_window, &screenWidth, &screenHeight);
@@ -327,14 +275,8 @@ void GeneticApp::SetUpFood()
 	m_food = new Food(vec2(x, y), 75.f);
 }
 
-void GeneticApp::SetUpWater()
+void GeneticApp::SetUpWater()	//setup new water
 {
-	//delete m_water;
-	//m_water = new Water(vec2(900, 600), 75.f);
-
-	//m_waters[0] = Water(vec2(50, 500), 75.f);
-	//m_waters[1] = Water(vec2(1000, 600), 75.f);
-
 	int screenWidth = 0;
 	int screenHeight = 0;
 	glfwGetWindowSize(m_window, &screenWidth, &screenHeight);
@@ -344,32 +286,7 @@ void GeneticApp::SetUpWater()
 	m_water = new Water(vec2(x, y), 75.f);
 }
 
-float GeneticApp::SimulateEnemy(vec2& centre, float range, Agent* agent)
-{
-	vec2 displacment = agent->GetPosition() - centre;
-	float distance = glm::length(displacment);
-	if (distance < range)
-		return true;
-	return false;
-}
-
-void GeneticApp::DrawAgents()
-{
-	//for (int i = 0; i < MAX_AGENTS; i++)
-	//	m_agents[i].Draw();
-
-	m_agent->Draw();
-}
-
-void GeneticApp::AddAgentGizmos()
-{
-	//for (int i = 0; i < MAX_AGENTS; i++)
-	//	m_agents[i].AddGizmo();
-
-	m_agent->AddGizmo();
-}
-
-void GeneticApp::AddEnemyWidgets(float delta)
+void GeneticApp::AddEnemyWidgets(float delta)	//update all enemies
 {
 	for (int i = 0; i < MAX_ENEMY; i++)
 	{
@@ -378,18 +295,6 @@ void GeneticApp::AddEnemyWidgets(float delta)
 	}
 }
 
-void GeneticApp::AddFoodWidgets()
-{
-	//for (int i = 0; i < MAX_FOOD; i++)
-	//	m_foods[i].AddGizmo();
-
-	m_food->AddGizmo();
-}
-
-void GeneticApp::AddWaterWidgets()
-{
-	//for (int i = 0; i < MAX_WATER; i++)
-	//	m_waters[i].AddGizmo();
-
-	m_water->AddGizmo();
-}
+void GeneticApp::AddAgentGizmos() { m_agent->AddGizmo(); }	//draw agents to screen
+void GeneticApp::AddFoodWidgets() { m_food->AddGizmo(); }	//draw food item to screen
+void GeneticApp::AddWaterWidgets() { m_water->AddGizmo(); }	//draw water item to screen

@@ -107,7 +107,6 @@ private:
 		GizmoVertex v2;
 	};
 
-	//unsigned int m_shader;
 	Shader* m_shader;
 
 	//line data

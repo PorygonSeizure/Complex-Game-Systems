@@ -1,7 +1,3 @@
-#define CRTDBG_MAP_ALLOC
-#include <stdlib.h>
-#include <crtdbg.h>
-
 #include "GeneticApp.h"
 #include <GLFW/glfw3.h>
 
@@ -14,9 +10,5 @@ int main()
 
 	delete app;
 
-	_CrtDumpMemoryLeaks();
-
 	return 0;
 }
-
-//leak at imgui.cpp 1774

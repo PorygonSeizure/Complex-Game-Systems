@@ -18,19 +18,20 @@ public:
 
 	void Setup(glm::vec2 startPos, float size, glm::vec4 colour, float facingDirection);
 	void Update(float delta, Food* food, Water* water, Enemy* enemies, int enemiesSize);
-	void Draw() {};
 	void AddGizmo();
+	void FoodContact();
+	void WaterContact();
 
 	Memory FoodDeath();
 	Memory WaterDeath();
 	Memory EnemyContact();
-	void FoodContact();
-	void WaterContact();
-
+	
 	glm::vec2 GetPosition() { return m_position; }
+
 	glm::vec3 GetWeights() { return glm::vec3(m_foodWeight, m_waterWeight, m_enemyWeight); }
+
 	int GetGen() { return m_generation; }
-	//float GetTime() { return m_clock; }
+
 	Memory* GetBestGens() { return m_bestGen; }
 
 	float m_baseFoodWeight;
@@ -45,46 +46,42 @@ public:
 	std::vector<float> times;
 
 private:
-	//float m_facingDirection;
 	float m_diameter;
 	float m_clock;
 	float m_maxSpeed;
+	float m_foodWeight;
+	float m_waterWeight;
+	float m_enemyWeight;
+	float m_foodDeath;
+	float m_waterDeath;
+	float m_enemyDeath;
 
 	glm::vec2 m_position;
 	glm::vec2 m_startingPosition;
 	glm::vec2 m_velocity;
 
 	bool m_active;
+	bool m_firstContact;
 
 	glm::vec4 m_colour;
 
 	std::vector<Memory> m_memory;
-	
-	bool CheckBounds();
 
 	int m_generation;
+	int m_betweenGoodGens;
+
+	Memory m_bestGen[3];
+
+	Food* m_food;
+
+	Water* m_water;
+
+	bool CheckBounds();
 
 	Memory AddToMemory(Death death);
 
 	void Behaviour(float deltaTime, Food* food, Water* water, Enemy* enemies, int enemiesSize);
 	void ModifyNewGen();
-
-	float m_foodWeight;
-	float m_waterWeight;
-	float m_enemyWeight;
-
-	Memory m_bestGen[3];
-
-	bool m_firstContact;
-
-	float m_foodDeath;
-	float m_waterDeath;
-	float m_enemyDeath;
-
-	Food* m_food;
-	Water* m_water;
-
-	int m_betweenGoodGens;
 };
 
 #endif

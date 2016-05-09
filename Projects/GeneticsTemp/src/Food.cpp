@@ -10,7 +10,7 @@ Food::Food(vec2 centre, float range)
 	m_active = true;
 }
 
-void Food::AddGizmo()
+void Food::AddGizmo()	//draws the food item using gizmos
 {
 	if (m_active)
 		Gizmos::Add2DCircle(m_centre, m_range, 20, glm::vec4(0, 1, 0, 0.25f));
